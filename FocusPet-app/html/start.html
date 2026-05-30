@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-start">
+    <div class="screen" id="startScreen">
+        <div class="card">
+            <div class="card-content">
+                <img src="../assets/logo.jpeg" alt="Logo FocusPet" class="start-logo">
+               
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.body.classList.add('fade-out');
+                setTimeout(function() {
+                    window.location.href = 'streak.html';
+                }, 500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

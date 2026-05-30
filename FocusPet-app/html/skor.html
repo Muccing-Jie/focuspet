@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Skor Terbaik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="page-statistik-detail page-skor">
+    <div class="screen">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">0 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">0</span>
+            </div>
+        </div>
+
+        <button class="back-button" onclick="location.href='main.html'">← Kembali</button>
+
+        <div class="score-modal-heading" style="color: #ff6b5b; text-shadow: none; font-size: 22px; font-weight: 800; margin: 10px 0 15px 0; text-align: center;">Skor Terbaik</div>
+
+        <div class="score-stat-list">
+            <div class="score-stat-card-row">
+                <div class="score-stat-left">
+                    <span class="score-stat-icon">⏱️</span>
+                    <span class="score-stat-label">Sesi Terlama</span>
+                </div>
+                <div class="score-stat-value" id="longestSessionValue">0 menit</div>
+            </div>
+            <div class="score-stat-card-row">
+                <div class="score-stat-left">
+                    <span class="score-stat-icon">🔥</span>
+                    <span class="score-stat-label">Sesi Terbanyak (1 hari)</span>
+                </div>
+                <div class="score-stat-value" id="mostSessionsValue">0</div>
+            </div>
+            <div class="score-stat-card-row">
+                <div class="score-stat-left">
+                    <span class="score-stat-icon">📊</span>
+                    <span class="score-stat-label">Total Semua Sesi</span>
+                </div>
+                <div class="score-stat-value" id="totalSessionsValue">0</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/focuspet-sync.js"></script>
+    <script src="../js/skor.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Main</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-main">
+    <div class="screen">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">10 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">200</span>
+            </div>
+        </div>
+
+        <!-- Pet Card -->
+        <div class="pet-card">
+            <div class="pet-section">
+                <div class="pet-header">
+                    <div class="pet-name">Puppy</div>
+                    <div class="pet-level" id="petLevel">Level 1</div>
+                </div>
+                <img src="../assets/petsehat.jpeg" alt="Pet Sehat" class="pet-placeholder">
+            </div>
+            <div class="level-section">
+                <div class="level-bar">
+                    <div class="level-progress" id="levelProgress" style="width: 0%;"></div>
+                </div>
+                <div class="level-info">
+                    <span id="currentXP">0</span> / <span id="maxXP">100</span> XP
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="menu-section">
+            <a href="belajar.html" class="menu-item" data-page="belajar">
+                <span class="menu-icon">📚</span>
+                <span class="menu-text">Mulai Belajar</span>
+            </a>
+            <a href="toko.html" class="menu-item" data-page="toko">
+                <span class="menu-icon">🏪</span>
+                <span class="menu-text">Toko Virtual</span>
+            </a>
+            <a href="skor.html" class="menu-item" data-page="skor">
+                <span class="menu-icon">🏆</span>
+                <span class="menu-text">Skor Terbaik</span>
+            </a>
+            <a href="statistik.html" class="menu-item" data-page="statistik">
+                <span class="menu-icon">📊</span>
+                <span class="menu-text">Statistik</span>
+            </a>
+        </div>
+    </div>
+
+
+    <script src="../js/focuspet-sync.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

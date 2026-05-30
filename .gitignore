@@ -1,0 +1,12 @@
+# Menyembunyikan konfigurasi database (Sangat Penting!)
+focuspet-api/config.php
+
+# Menyembunyikan file sampah otomatis dari Windows (jika ada)
+Thumbs.db
+desktop.ini
+
+# Menyembunyikan file sampah otomatis dari Mac (jika Anda pakai Mac)
+.DS_Store
+
+# (Opsional) Jika nanti Anda menggunakan Node.js, tambahkan:
+node_modules/

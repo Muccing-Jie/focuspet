@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Daftar</title>
+    <meta name="description" content="Daftar akun baru di FocusPet untuk mulai merawat hewan peliharaan virtualmu.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+<body class="page-register">
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="../assets/logo.jpeg" alt="Logo FocusPet" class="logo-image">
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">Daftar</h1>
+        <p class="subtitle">Buat akun baru di FocusPet</p>
+
+        <!-- Register Form -->
+        <form id="registerForm" onsubmit="return handleRegister(event)">
+            <!-- Nama Lengkap Field -->
+            <div class="form-group">
+                <label class="form-label" for="fullname">Nama Lengkap</label>
+                <input 
+                    type="text" 
+                    id="fullname" 
+                    class="form-input" 
+                    placeholder="Masukkan nama lengkap"
+                    required
+                >
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="Masukkan alamat email"
+                    required
+                >
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-field">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Masukkan password"
+                        required
+                        minlength="6"
+                    >
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg class="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p class="password-hint">Minimal 6 karakter</p>
+            </div>
+
+            <!-- Konfirmasi Password Field -->
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">Konfirmasi Password</label>
+                <div class="password-field">
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        class="form-input" 
+                        placeholder="Ulangi password"
+                        required
+                        minlength="6"
+                    >
+                    <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Tampilkan konfirmasi password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg class="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Error message untuk password tidak cocok -->
+                <p class="error-message" id="passwordError">Password tidak cocok!</p>
+            </div>
+
+            <!-- Register Button -->
+            <button type="submit" id="registerButton" class="register-button">Daftar</button>
+        </form>
+
+        <!-- Login Section -->
+        <div class="login-section">
+            Sudah punya akun? <a href="login.html" class="login-link">Masuk</a>
+        </div>
+    </div>
+
+    <script src="../js/register.js"></script>
+</body>
+</html>

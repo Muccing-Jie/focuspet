@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Rapor Fokus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="page-statistik-detail">
+    <div class="screen">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">0 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">0</span>
+            </div>
+        </div>
+
+        <button class="back-button" type="button" onclick="location.href='statistik.html'">← Kembali</button>
+
+        <section class="detail-card" style="box-shadow: none; background: transparent; padding: 0; margin-bottom: 5px;">
+            <h2
+                style="color: #ff6b5b; font-size: 22px; font-weight: 800; margin-bottom: 6px; text-align: center; text-shadow: none;">
+                Rapor Fokus</h2>
+            <p style="color: #6f6f6f; text-align: center; font-size: 13px; margin-bottom: 20px; text-shadow: none;">
+                Statistik performa dan riwayat belajar fokus kamu.</p>
+        </section>
+
+        <div class="rapor-grid">
+            <div class="rapor-card">
+                <div class="rapor-label">
+                    <span class="rapor-icon">🔥</span>
+                    <span>Streak Saat Ini</span>
+                </div>
+                <div class="rapor-value" id="raporStreak">0 Hari</div>
+            </div>
+
+            <div class="rapor-card">
+                <div class="rapor-label">
+                    <span class="rapor-icon">💰</span>
+                    <span>Total Koin Terkumpul</span>
+                </div>
+                <div class="rapor-value" id="raporTotalCoins">0</div>
+            </div>
+
+            <div class="rapor-card">
+                <div class="rapor-label">
+                    <span class="rapor-icon">⏱️</span>
+                    <span>Sesi Terlama</span>
+                </div>
+                <div class="rapor-value" id="raporLongestSession">0 menit</div>
+            </div>
+
+            <div class="rapor-card">
+                <div class="rapor-label">
+                    <span class="rapor-icon">📊</span>
+                    <span>Total Semua Sesi</span>
+                </div>
+                <div class="rapor-value" id="raporTotalSessions">0</div>
+            </div>
+        </div>
+
+        <script src="../js/focuspet-sync.js"></script>
+        <script src="../js/rapor.js"></script>
+    </div>
+</body>
+
+</html>

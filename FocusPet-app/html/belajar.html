@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Mulai Belajar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-belajar">
+    <div class="screen">
+        <div id="selectionContent">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">10 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">200</span>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <button class="back-button" onclick="goBack()">
+            <span>← Kembali</span>
+        </button>
+
+        <!-- Durasi Belajar Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">⏱️</span>
+                <span class="section-title">Durasi Belajar</span>
+            </div>
+            <div class="duration-grid">
+                <button class="option-btn duration-btn" data-duration="30" onclick="selectDuration(30, this)">30 Menit</button>
+                <button class="option-btn duration-btn" data-duration="60" onclick="selectDuration(60, this)">1 jam</button>
+                <button class="option-btn duration-btn" data-duration="120" onclick="selectDuration(120, this)">2 jam</button>
+                <button class="option-btn duration-btn" data-duration="180" onclick="selectDuration(180, this)">3 jam</button>
+            </div>
+            <input type="number" id="customDuration" class="custom-input" placeholder="Atau masukkan menit lain" min="1" max="1440">
+        </div>
+
+        <!-- Kegiatan Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">📋</span>
+                <span class="section-title">Kegiatan</span>
+            </div>
+            <div class="topic-grid">
+                <button class="option-btn topic-btn" data-topic="belajar" style="background: linear-gradient(135deg, #90ee90 0%, #7ed321 100%);">
+                    <span class="topic-emoji">🎓</span>
+                    <span>Belajar</span>
+                </button>
+                <button class="option-btn topic-btn" data-topic="olahraga" style="background: linear-gradient(135deg, #ffb347 0%, #ff7f50 100%);">
+                    <span class="topic-emoji">🏃</span>
+                    <span>Olahraga</span>
+                </button>
+                <button class="option-btn topic-btn" data-topic="meditasi" style="background: linear-gradient(135deg, #87ceeb 0%, #4a9fd8 100%);">
+                    <span class="topic-emoji">🧘</span>
+                    <span>Meditasi</span>
+                </button>
+                <button class="option-btn topic-btn" data-topic="membaca" style="background: linear-gradient(135deg, #ffeb99 0%, #ffd700 100%);">
+                    <span class="topic-emoji">📚</span>
+                    <span>Membaca</span>
+                </button>
+                <button class="option-btn topic-btn" data-topic="coding" style="background: linear-gradient(135deg, #da70d6 0%, #c847c8 100%);">
+                    <span class="topic-emoji">💻</span>
+                    <span>Coding</span>
+                </button>
+                <button class="option-btn topic-btn" data-topic="other" id="otherTopicBtn" onclick="showOtherTopicInput(this)" style="background: linear-gradient(135deg, #888888 0%, #666666 100%);">
+                    <span class="topic-emoji">➕</span>
+                    <span id="otherTopicLabel">Lainnya</span>
+                </button>
+            </div>
+            <div class="other-topic-group hidden" id="otherTopicGroup">
+                <input type="text" id="otherTopicInput" class="other-topic-input" placeholder="Masukkan kegiatan lain (mis. Belajar Olahraga)">
+                <div class="other-topic-actions">
+                    <button class="option-btn other-topic-save" onclick="saveOtherTopic()">Simpan</button>
+                    <button class="option-btn other-topic-cancel" onclick="cancelOtherTopic()">Batal</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Musik Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🎵</span>
+                <span class="section-title">Background Musik</span>
+            </div>
+            <div class="music-grid">
+                <button class="option-btn music-btn selected" data-music="diam">
+                    <span class="music-emoji">🔇</span>
+                    <span>Diam</span>
+                </button>
+                <button class="option-btn music-btn" data-music="musik">
+                    <span class="music-emoji">🎵</span>
+                    <span>Musik</span>
+                </button>
+                <button class="option-btn music-btn" data-music="hujan">
+                    <span class="music-emoji">🌧️</span>
+                    <span>Hujan</span>
+                </button>
+                <button class="option-btn music-btn" data-music="alam">
+                    <span class="music-emoji">🌳</span>
+                    <span>Alam</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Start Learning Button -->
+        <button class="start-button" onclick="startLearning()">Mulai Belajar</button>
+        </div>
+
+        <div class="learning-screen hidden" id="learningScreen">
+            <div class="timer-card">
+                <button class="back-button timer-back" onclick="stopLearning(true)">← Kembali</button>
+                <img src="../assets/petsehat.jpeg" alt="Pet Belajar" class="timer-pet">
+                <div class="timer-title">
+                    <div class="timer-activity" id="currentActivity">Kegiatan: -</div>
+                </div>
+                <div class="timer-circle">
+                    <div class="timer-value" id="timerValue">30:00</div>
+                </div>
+                <div class="timer-actions">
+                    <button class="timer-control-button pause-button" id="pauseButton" onclick="toggleTimer()">Jeda</button>
+                    <button class="timer-control-button stop-button" onclick="stopLearning(true)">Berhenti</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-screen hidden" id="resultScreen">
+            <div class="result-card" id="resultCard">
+                <img src="../assets/petsehat.jpeg" alt="Hewan Sukses" class="result-image">
+                <div class="result-icon" id="resultIcon">🔥</div>
+                <div class="result-title" id="resultTitle">Kerja Bagus</div>
+                <div class="result-text" id="resultText">Sesi belajar selesai. Koin bertambah!</div>
+                <div class="result-reward" id="resultReward">+2 Koin</div>
+                <button class="result-button" onclick="closeResult()">Lanjut</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/focuspet-sync.js"></script>
+    <script src="../js/belajar.js"></script>
+</body>
+</html>

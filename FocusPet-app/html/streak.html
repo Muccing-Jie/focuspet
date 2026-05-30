@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Streak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-streak">
+    <div class="screen">
+        <!-- Initial View -->
+        <div class="card initial-view" id="initialView">
+            <div class="card-content">
+                <img src="../assets/api.png" alt="Check Streak Pet" class="pet-placeholder">
+                <button class="check-button" onclick="showPetStatus(event)">Check Streak Pet</button>
+            </div>
+        </div>
+
+        <!-- Pet Status View -->
+        <div class="card status-view hidden" id="statusView">
+            <div class="card-content">
+                <img id="petImage" src="../assets/petsedih.jpeg" alt="Pet Status" class="pet-placeholder">
+                <div class="status-label" id="statusLabel">Pet Sedih</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/streak.js"></script>
+</body>
+</html>

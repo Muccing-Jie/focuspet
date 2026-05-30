@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Riwayat Sesi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-statistik-detail">
+    <div class="screen">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">0 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">0</span>
+            </div>
+        </div>
+
+        <button class="back-button" type="button" onclick="location.href='statistik.html'">← Kembali</button>
+
+        <div class="history-header-group">
+            <h3 style="margin: 0; color: #ff6b5b; font-size: 20px; font-weight: 700;">Riwayat Sesi</h3>
+            <button type="button" id="clearSessionsBtn" class="history-clear-button">Hapus Semua</button>
+        </div>
+
+        <div id="sessionList" class="session-list">
+            <!-- sessions will be rendered here by js/riwayat.js -->
+        </div>
+
+        <script src="../js/focuspet-sync.js"></script>
+        <script src="../js/riwayat.js"></script>
+    </div>
+</body>
+</html>

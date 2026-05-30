@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Toko Virtual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="page-toko">
+    <div class="screen">
+        <!-- Header Stats -->
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🔥</span>
+                <span class="stat-value" id="streakCount">0 Hari</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-value" id="coinCount">0</span>
+            </div>
+        </div>
+
+        <button class="back-button" onclick="goBack()">← Kembali</button>
+
+        <div class="store-grid">
+            <div class="store-card" data-key="topiSulap" data-cost="50">
+                <div class="store-icon">🎩</div>
+                <div class="store-name">Topi Sulap</div>
+                <div class="store-desc">Terlihat Profesional</div>
+                <div class="store-price">50</div>
+                <button class="store-buy" onclick="buyItem('topiSulap')">Beli</button>
+            </div>
+            <div class="store-card" data-key="mahkota" data-cost="80">
+                <div class="store-icon">👑</div>
+                <div class="store-name">Mahkota</div>
+                <div class="store-desc">Kamu Raja Belajar</div>
+                <div class="store-price">80</div>
+                <button class="store-buy" onclick="buyItem('mahkota')">Beli</button>
+            </div>
+            <div class="store-card" data-key="kacamata" data-cost="40">
+                <div class="store-icon">👓</div>
+                <div class="store-name">Kacamata</div>
+                <div class="store-desc">Tampak Pintar</div>
+                <div class="store-price">40</div>
+                <button class="store-buy" onclick="buyItem('kacamata')">Beli</button>
+            </div>
+            <div class="store-card" data-key="bintangEmas1" data-cost="20">
+                <div class="store-icon">⭐</div>
+                <div class="store-name">Bintang Emas</div>
+                <div class="store-desc">Mood Boost</div>
+                <div class="store-price">20</div>
+                <button class="store-buy" onclick="buyItem('bintangEmas1')">Beli</button>
+            </div>
+            <div class="store-card" data-key="bintangEmas2" data-cost="20">
+                <div class="store-icon">⭐</div>
+                <div class="store-name">Bintang Emas</div>
+                <div class="store-desc">Mood Boost</div>
+                <div class="store-price">20</div>
+                <button class="store-buy" onclick="buyItem('bintangEmas2')">Beli</button>
+            </div>
+            <div class="store-card" data-key="bintangEmas3" data-cost="20">
+                <div class="store-icon">⭐</div>
+                <div class="store-name">Bintang Emas</div>
+                <div class="store-desc">Mood Boost</div>
+                <div class="store-price">20</div>
+                <button class="store-buy" onclick="buyItem('bintangEmas3')">Beli</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/focuspet-sync.js"></script>
+    <script src="../js/toko.js"></script>
+</body>
+
+</html>

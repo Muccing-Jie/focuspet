@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="page-login">
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="../assets/logo.jpeg" alt="Logo FocusPet" class="logo-image" id="loginPetImage">
+        </div>
+
+        <!-- Pet Mood Indicator -->
+        <div class="pet-mood-indicator" id="petMoodIndicator" style="display:none;">
+            <span class="mood-dot" id="moodDot"></span>
+            <span class="mood-text" id="moodText"></span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">Masuk</h1>
+        <p class="subtitle" id="loginSubtitle">Selamat datang kembali ke FocusPet</p>
+
+        <!-- Login Form -->
+        <form onsubmit="return handleLogin(event)">
+            <!-- Email Field -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email / Username</label>
+                <input type="email" id="email" class="form-input" placeholder="Masukkan email atau username" required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-field">
+                    <input type="password" id="password" class="form-input" placeholder="Masukkan password" required>
+                    <button type="button" class="toggle-password" id="togglePassword"
+                        onclick="togglePasswordVisibility()" aria-label="Tampilkan password">
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg id="eyeOffIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94">
+                            </path>
+                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                            <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Remember & Forgot -->
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" class="checkbox">
+                    <label for="remember">Ingat saya</label>
+                </div>
+                <a href="forgot-password.html" class="forgot-password">Lupa password?</a>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit" class="login-button">Masuk</button>
+        </form>
+
+        <!-- Sign Up Section -->
+        <div class="signup-section">
+            Belum punya akun? <a href="register.html" class="signup-link">Daftar sekarang</a>
+        </div>
+    </div>
+
+    <script>
+        function updateLoginPetMood() {
+            const petImage = document.getElementById('loginPetImage');
+            const subtitle = document.getElementById('loginSubtitle');
+            const moodIndicator = document.getElementById('petMoodIndicator');
+            const moodDot = document.getElementById('moodDot');
+            const moodText = document.getElementById('moodText');
+            const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || 'null');
+
+            if (!userData) {
+                // Belum pernah login / user baru → tampilkan logo default
+                return;
+            }
+
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : null;
+            const now = new Date();
+
+            if (lastVisit) {
+                const diffTime = now.getTime() - lastVisit.getTime();
+                const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+                if (diffDays >= 3) {
+                    // Pet sedih - sudah 3 hari tidak buka
+                    petImage.src = '../assets/petsedih.jpeg';
+                    petImage.alt = 'Pet Sedih';
+                    petImage.classList.add('pet-sad');
+                    subtitle.textContent = 'Pet kamu merindukanmu! Ayo masuk 🥺';
+                    subtitle.style.color = '#ff6b5b';
+
+                    // Tampilkan mood indicator
+                    moodIndicator.style.display = 'flex';
+                    moodDot.style.background = '#ff6b5b';
+                    moodText.textContent = 'Pet sedih — ' + Math.floor(diffDays) + ' hari tidak buka';
+                    moodText.style.color = '#ff6b5b';
+                } else {
+                    // Pet sehat - masih dalam 3 hari
+                    petImage.src = '../assets/petsehat.jpeg';
+                    petImage.alt = 'Pet Sehat';
+                    petImage.classList.add('pet-happy');
+                    subtitle.textContent = 'Selamat datang kembali ke FocusPet 🎉';
+                    subtitle.style.color = '#4caf50';
+
+                    // Tampilkan mood indicator
+                    moodIndicator.style.display = 'flex';
+                    moodDot.style.background = '#4caf50';
+                    moodText.textContent = 'Pet senang — kamu rajin membuka app!';
+                    moodText.style.color = '#4caf50';
+                }
+            }
+        }
+
+        // Jalankan saat halaman login dimuat
+        window.addEventListener('DOMContentLoaded', updateLoginPetMood);
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const eyeOffIcon = document.getElementById('eyeOffIcon');
+            const toggleBtn = document.getElementById('togglePassword');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+                toggleBtn.setAttribute('aria-label', 'Sembunyikan password');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+                toggleBtn.setAttribute('aria-label', 'Tampilkan password');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Panggil API PHP Server
+            fetch('http://localhost/focuspet-api/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, password: password })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Simpan user_id ke browser
+                        localStorage.setItem('user_id', data.user_id);
+
+                        // Update lastVisit karena user baru saja login
+                        const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+                        userData.lastVisit = new Date().toISOString();
+                        localStorage.setItem('focuspet_user_data', JSON.stringify(userData));
+
+                        alert('Login berhasil! Selamat datang kembali.');
+                        window.location.href = 'start.html';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal terhubung ke server backend. Pastikan PHP Server sudah jalan!');
+                });
+
+            return false;
+        }
+    </script>
+</body>
+
+</html>

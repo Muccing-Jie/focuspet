@@ -1,0 +1,41 @@
+/* Modal styles for Target Hari Ini (separate file, but we'll include rules in main stylesheet) */
+
+.target-modal-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(17,17,17,0.28);
+  z-index:120;
+}
+
+.target-modal{
+  width:360px;
+  max-width:94%;
+  background: linear-gradient(180deg,#fffaf8 0%, #fff6f3 100%);
+  border-radius:26px;
+  padding:18px;
+  box-shadow: 0 30px 70px rgba(25,25,25,0.14);
+}
+
+.target-modal-close{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:none;
+  background:#fff;
+  color:#d84b2f;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,140,80,0.12);
+}
+
+.target-modal-body{ padding:12px 0 0 0 }
+.target-modal-body h3{ margin:0 0 8px 0; font-size:18px; font-weight:800; color:#2e2e2e }
+.target-modal-body p{ margin:0 0 14px 0; color:#6f6f6f; font-size:13px }
+.target-list{ display:flex; flex-direction:column; gap:10px }
+.target-row{ display:flex; justify-content:space-between; align-items:center; padding:12px; background:#fff7f3; border-radius:14px }
+.target-row strong{ color:#d24e35 }

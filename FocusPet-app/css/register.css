@@ -1,0 +1,277 @@
+/* ========================================
+   FocusPet Register Page Styles
+   Konsisten dengan desain login page
+   ======================================== */
+
+/* Global reset and typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    color: #1a1a1a;
+}
+
+/* Register page background */
+.page-register {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Container card */
+.page-register .container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border-radius: 25px;
+    padding: 40px 30px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.page-register .logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.page-register .logo-image {
+    width: 140px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Title */
+.page-register .title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.page-register .subtitle {
+    font-size: 14px;
+    color: #a0a0a0;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+/* Form groups */
+.page-register .form-group {
+    margin-bottom: 20px;
+}
+
+.page-register .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.page-register .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.page-register .form-input:focus {
+    outline: none;
+    border-color: #FFB366;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(255, 179, 102, 0.1);
+}
+
+.page-register .form-input::placeholder {
+    color: #d0d0d0;
+}
+
+/* Input error state */
+.page-register .form-input.input-error {
+    border-color: #ff4d4d;
+    background-color: #fff5f5;
+}
+
+.page-register .form-input.input-error:focus {
+    box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.1);
+}
+
+/* Input success state */
+.page-register .form-input.input-success {
+    border-color: #4caf50;
+    background-color: #f5fff5;
+}
+
+.page-register .form-input.input-success:focus {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Password field wrapper */
+.page-register .password-field {
+    position: relative;
+}
+
+.page-register .password-field .form-input {
+    padding-right: 44px;
+}
+
+/* Toggle password button */
+.page-register .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #b0b0b0;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.page-register .toggle-password:hover {
+    color: #FFB366;
+}
+
+/* Password hint */
+.page-register .password-hint {
+    font-size: 11px;
+    color: #b0b0b0;
+    margin-top: 6px;
+    padding-left: 4px;
+}
+
+/* Error message */
+.page-register .error-message {
+    font-size: 12px;
+    color: #ff4d4d;
+    margin-top: 6px;
+    padding-left: 4px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.page-register .error-message.visible {
+    display: flex;
+}
+
+.page-register .error-message::before {
+    content: "⚠";
+    font-size: 13px;
+}
+
+/* Success message */
+.page-register .success-message {
+    font-size: 12px;
+    color: #4caf50;
+    margin-top: 6px;
+    padding-left: 4px;
+    display: none;
+    align-items: center;
+    gap: 4px;
+}
+
+.page-register .success-message.visible {
+    display: flex;
+}
+
+.page-register .success-message::before {
+    content: "✓";
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Register button */
+.page-register .register-button {
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #FFB366 0%, #FF9D3E 100%);
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(255, 157, 62, 0.3);
+    font-family: 'Poppins', sans-serif;
+    margin-top: 10px;
+}
+
+.page-register .register-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(255, 157, 62, 0.4);
+}
+
+.page-register .register-button:active {
+    transform: translateY(0);
+}
+
+.page-register .register-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 6px 15px rgba(255, 157, 62, 0.2);
+}
+
+/* Loading state for button */
+.page-register .register-button.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Login section link */
+.page-register .login-section {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 13px;
+    color: #a0a0a0;
+}
+
+.page-register .login-link {
+    color: #FFB366;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.page-register .login-link:hover {
+    color: #FF9D3E;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .page-register .container {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+
+    .page-register .logo-image {
+        width: 120px;
+    }
+
+    .page-register .title {
+        font-size: 24px;
+    }
+}
