@@ -80,10 +80,11 @@
                 <span class="menu-icon">📊</span>
                 <span class="menu-text">Statistik</span>
             </a>
-            <button class="menu-item" type="button" data-page="skor" onclick="openScoreModal()">
+            <!-- Ini bagian yang ditambal: Tombol Skor Terbaik menjadi navigasi halaman -->
+            <a href="skor.html" class="menu-item" data-page="skor">
                 <span class="menu-icon">🥇</span>
                 <span class="menu-text">Skor Terbaik</span>
-            </button>
+            </a>
         </div>
     </div>
 
@@ -101,52 +102,7 @@
         </div>
     </div>
 
-    <div class="score-modal-overlay" id="scoreModalOverlay">
-        <div class="score-modal">
-            <button class="score-modal-close" type="button" onclick="closeScoreModal()">× Kembali</button>
-            <div class="score-modal-topline">
-                <div class="score-pill">
-                    <span>Streak</span>
-                    <strong id="modalStreakCount">0 Hari</strong>
-                </div>
-                <div class="score-pill score-pill-coin">
-                    <span>Koin</span>
-                    <strong id="modalCoinCount">0</strong>
-                </div>
-            </div>
-            <div class="score-modal-card">
-                <div class="score-pet-badge">
-                    <span>Pet Power</span>
-                    <span>Semangat</span>
-                </div>
-                <img src="../assets/petsehat.jpeg" alt="Pet Sehat" class="score-pet-image">
-                <div class="score-modal-progress">
-                    <div class="score-modal-heading">Progress XP</div>
-                    <div class="score-progress-bar">
-                        <div class="score-progress-fill"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="score-stat-grid">
-                <div class="score-stat-card score-stat-card--green">
-                    <span class="stat-value" id="bestStreakValue">0</span>
-                    <span class="stat-label">Streak Terbaik</span>
-                </div>
-                <div class="score-stat-card score-stat-card--purple">
-                    <span class="stat-value" id="longestSessionValue">0 jam</span>
-                    <span class="stat-label">Sesi Terlama</span>
-                </div>
-                <div class="score-stat-card score-stat-card--yellow">
-                    <span class="stat-value" id="mostSessionsValue">0</span>
-                    <span class="stat-label">Sesi Paling Banyak</span>
-                </div>
-                <div class="score-stat-card score-stat-card--red">
-                    <span class="stat-value" id="totalSessionsValue">0</span>
-                    <span class="stat-label">Total Sesi</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Bagian <div class="score-modal-overlay"...> yang berisi 50 baris kode telah saya hapus dari sini karena sudah dipindahkan ke skor.html -->
 
     <div class="pet-name-modal-overlay" id="petNameModalOverlay">
         <div class="pet-name-modal">
