@@ -178,14 +178,19 @@ function playBackgroundMusic(key) {
 }
 
 function handleVisibilityChange() {
+    // Cek apakah timer fokus sedang aktif
     if (!learningTimerInterval) return;
+
+    // Jika status halaman tersembunyi (user buka aplikasi lain / tab lain)
     if (document.hidden) {
-        learningPaused = true;
-        isDistracted = true;
-        showSessionWarning('Tab diluar fokus, sesi dijeda. Kembali agar sesi dapat dilanjutkan.');
-    } else if (isDistracted) {
-        showSessionWarning('Kembalikan fokus untuk melanjutkan sesi.');
-        setTimeout(() => showSessionWarning(''), 4000);
+        alert("Fokus Anda terganggu karena membuka aplikasi lain! Sesi dibatalkan dan Pet Anda menjadi sedih.");
+        
+        // Panggil fungsi untuk menggagalkan sesi fokus secara otomatis
+        stopLearning(true);
+        
+        // Sembunyikan peringatan jika ada
+        showSessionWarning('');
+        isDistracted = false;
     }
 }
 

@@ -62,17 +62,31 @@ function syncStoreDataToLocalStorage(updatedData) {
 }
 
 function markPurchasedItems(purchasedItems) {
+    // 1. Tangani item lama dengan class .store-card
     document.querySelectorAll('.store-card').forEach((card) => {
         const itemKey = card.getAttribute('data-key');
         const button = card.querySelector('.store-buy');
         if (purchasedItems.includes(itemKey)) {
             card.classList.add('purchased');
-            button.textContent = 'Terbeli';
-            button.disabled = true;
+            if (button) { button.textContent = 'Terbeli'; button.disabled = true; }
         } else {
             card.classList.remove('purchased');
-            button.textContent = 'Beli';
-            button.disabled = false;
+            if (button) { button.textContent = 'Beli'; button.disabled = false; }
+        }
+    });
+
+    // 2. Tangani item baru (Ramuan Energi) dengan class .item-card dan data-id
+    document.querySelectorAll('.item-card').forEach((card) => {
+        const itemId = card.getAttribute('data-id');
+        const itemKey = itemId == 3 ? 'ramuanEnergi' : 'item_' + itemId;
+        const button = card.querySelector('.btn-beli');
+        
+        if (purchasedItems.includes(itemKey)) {
+            card.classList.add('purchased');
+            if (button) { button.textContent = 'Terbeli'; button.disabled = true; }
+        } else {
+            card.classList.remove('purchased');
+            if (button) { button.textContent = 'Beli'; button.disabled = false; }
         }
     });
 }
@@ -84,7 +98,8 @@ function getStoreItemLabel(itemKey) {
         kacamata: 'Kacamata',
         bintangEmas1: 'Bintang Emas',
         bintangEmas2: 'Bintang Emas',
-        bintangEmas3: 'Bintang Emas'
+        bintangEmas3: 'Bintang Emas',
+        ramuanEnergi: 'Ramuan Energi' // Item baru ditambahkan di sini
     };
     return itemLabels[itemKey] || itemKey;
 }
@@ -101,16 +116,18 @@ function renderInventory(purchasedItems, petAccessory, petMood) {
     const uniqueItems = [...new Set(purchasedItems)];
     container.innerHTML = uniqueItems.map(itemKey => {
         const itemLabel = getStoreItemLabel(itemKey);
-        const isEquipped = itemKey.startsWith('bintangEmas')
-            ? petMood === 'Mood Boost'
+        const isEquipped = itemKey.startsWith('bintangEmas') || itemKey === 'ramuanEnergi'
+            ? petMood === (itemKey === 'ramuanEnergi' ? 'Penuh Energi' : 'Mood Boost')
             : petAccessory === itemLabel;
+            
         const badge = isEquipped ? '<span class="inventory-badge">Sedang dipakai</span>' : '';
+        const subtitle = (itemKey.startsWith('bintangEmas') || itemKey === 'ramuanEnergi') ? 'Pemulih Mood/Energi' : 'Aksesori pet';
 
         return `
         <div class="inventory-row">
             <div class="inventory-item">
                 <div class="inventory-name">${itemLabel} ${badge}</div>
-                <div class="inventory-subtitle">${itemKey.startsWith('bintangEmas') ? 'Mood Boost' : 'Aksesori pet'}</div>
+                <div class="inventory-subtitle">${subtitle}</div>
             </div>
             <div class="inventory-actions">
                 <button class="inventory-release" ${isEquipped ? '' : 'disabled'} onclick="releaseItem('${itemKey}')">Lepas</button>
@@ -126,7 +143,9 @@ function deleteItem(itemKey) {
     const userId = localStorage.getItem('user_id');
     const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
     const updatedPurchasedItems = (userData.purchasedItems || []).filter(key => key !== itemKey);
-    const isEquipped = userData.petAccessory === getStoreItemLabel(itemKey) || (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas'));
+    const isEquipped = userData.petAccessory === getStoreItemLabel(itemKey) || 
+                      (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas')) ||
+                      (userData.petMood === 'Penuh Energi' && itemKey === 'ramuanEnergi');
 
     const updatedData = {
         purchasedItems: updatedPurchasedItems
@@ -167,6 +186,8 @@ function equipItem(itemKey) {
 
     if (itemKey.startsWith('bintangEmas')) {
         updatedData.petMood = 'Mood Boost';
+    } else if (itemKey === 'ramuanEnergi') {
+        updatedData.petMood = 'Penuh Energi'; // Efek Ramuan Energi
     } else {
         updatedData.petAccessory = itemLabel;
         if (itemKey === 'topiSulap') {
@@ -204,7 +225,9 @@ function releaseItem(itemKey) {
     const userId = localStorage.getItem('user_id');
     const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
     const itemLabel = getStoreItemLabel(itemKey);
-    const isEquipped = userData.petAccessory === itemLabel || (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas'));
+    const isEquipped = userData.petAccessory === itemLabel || 
+                       (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas')) ||
+                       (userData.petMood === 'Penuh Energi' && itemKey === 'ramuanEnergi');
 
     if (!isEquipped) {
         alert(`${getStoreItemLabel(itemKey)} tidak sedang dipakai.`);
@@ -252,16 +275,18 @@ function openInventoryModal() {
         const uniqueItems = [...new Set(purchasedItems)];
         modalList.innerHTML = uniqueItems.map(itemKey => {
             const itemLabel = getStoreItemLabel(itemKey);
-            const isEquipped = itemKey.startsWith('bintangEmas')
-                ? petMood === 'Mood Boost'
+            const isEquipped = itemKey.startsWith('bintangEmas') || itemKey === 'ramuanEnergi'
+                ? petMood === (itemKey === 'ramuanEnergi' ? 'Penuh Energi' : 'Mood Boost')
                 : petAccessory === itemLabel;
+                
             const badge = isEquipped ? '<span class="inventory-badge">Sedang dipakai</span>' : '';
+            const subtitle = (itemKey.startsWith('bintangEmas') || itemKey === 'ramuanEnergi') ? 'Pemulih Mood/Energi' : 'Aksesori pet';
 
             return `
             <div class="inventory-row">
                 <div class="inventory-item">
                     <div class="inventory-name">${itemLabel} ${badge}</div>
-                    <div class="inventory-subtitle">${itemKey.startsWith('bintangEmas') ? 'Mood Boost' : 'Aksesori pet'}</div>
+                    <div class="inventory-subtitle">${subtitle}</div>
                 </div>
                 <div class="inventory-actions">
                     <button class="inventory-release" ${isEquipped ? '' : 'disabled'} onclick="releaseItem('${itemKey}')">Lepas</button>
@@ -285,11 +310,24 @@ function goBack() {
     window.location.href = 'main.html';
 }
 
-function buyItem(itemKey) {
+// -------------------------------------------------------------------------
+// FUNGSI BARU: Jembatan untuk format HTML <button onclick="beliItem(3, 75)">
+// -------------------------------------------------------------------------
+function beliItem(itemId, harga) {
+    const itemKey = itemId == 3 ? 'ramuanEnergi' : 'item_' + itemId;
+    buyItem(itemKey, harga); // Teruskan ke fungsi buyItem yang asli
+}
+
+// Fungsi buyItem diperbarui agar bisa menerima parameter harga eksplisit
+function buyItem(itemKey, explicitCost = null) {
     const userId = localStorage.getItem('user_id');
     const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
     const card = document.querySelector(`.store-card[data-key="${itemKey}"]`);
-    const cost = card ? parseInt(card.getAttribute('data-cost'), 10) : 0;
+    
+    // Jika harga diberikan via parameter (seperti beliItem), gunakan harga itu. 
+    // Jika tidak, ambil dari atribut HTML data-cost
+    const cost = explicitCost !== null ? explicitCost : (card ? parseInt(card.getAttribute('data-cost'), 10) : 0);
+    
     userData.purchasedItems = userData.purchasedItems || [];
 
     if (userData.coins === undefined || userData.coins === null) {
@@ -330,8 +368,6 @@ function buyItem(itemKey) {
             userData.coins -= cost;
             userData.purchasedItems.push(itemKey);
 
-            // Pasang item ke pet agar tersimpan di server juga
-            // (mirroring perilaku fitur equip di inventory)
             if (userId) {
                 fetch('http://localhost/focuspet-api/release_item.php', {
                     method: 'POST',
@@ -343,7 +379,6 @@ function buyItem(itemKey) {
                         if (resp.status !== 'success') {
                             console.warn('Gagal memasang item di server setelah beli:', resp.message);
                         }
-                        // tetap lanjut render dari local dulu
                     })
                     .catch(err => console.warn('Server equip item tidak tersedia setelah beli:', err));
             }
@@ -369,6 +404,10 @@ function buyItem(itemKey) {
                 case 'bintangEmas3':
                     userData.petMood = 'Mood Boost';
                     alert('Berhasil membeli Bintang Emas! Mood petmu naik.');
+                    break;
+                case 'ramuanEnergi':
+                    userData.petMood = 'Penuh Energi';
+                    alert('Berhasil membeli Ramuan Energi! Energi dan mood petmu pulih kembali.');
                     break;
                 default:
                     alert('Item tidak dikenali.');

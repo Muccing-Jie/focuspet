@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 3. Update data di dalam Modal Skor Terbaik
             updateScoreModalValues(syncedUserData);
+
+            // 4. Update status/ekspresi gambar pet
+            updatePetStatusDisplay(syncedUserData);
         } else {
             console.error(result.message);
         }
@@ -111,6 +114,9 @@ function syncMainPageFromLocalStorage() {
     updateScoreModalValues(existingUserData);
     updateInventorySummary(existingUserData.purchasedItems || []);
     updatePetAccessoryOverlay(existingUserData);
+
+    // Update status/ekspresi gambar pet secara offline
+    updatePetStatusDisplay(existingUserData);
 }
 
 function updatePetAccessoryOverlay(userData) {
@@ -462,3 +468,24 @@ window.addEventListener('load', function() {
         });
     }
 });
+
+// ==========================================
+// FUNGSI BARU: Logika Ekspresi/Kesehatan Pet
+// ==========================================
+function updatePetStatusDisplay(userData) {
+    const petImage = document.getElementById('pet-display');
+    if (!petImage) return;
+
+    // Default health ke 100 jika tidak ada di database, agar tidak error
+    const health = userData.health !== undefined ? userData.health : 100;
+    
+    // Mengecek apakah status/mood sedang sakit/sedih
+    const statusPet = userData.status_pet || userData.petMood || '';
+
+    // Jika kesehatan < 30 atau status/mood diset sebagai 'sakit' / 'sedih'
+    if (health < 30 || statusPet.toLowerCase() === 'sakit' || statusPet.toLowerCase() === 'sedih') {
+        petImage.src = '../assets/petsedih.jpeg';
+    } else {
+        petImage.src = '../assets/petsehat.jpeg';
+    }
+}
