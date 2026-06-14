@@ -1,14 +1,64 @@
-/**
- * Toko Virtual — menggunakan FocusPetSync untuk data Streak & Koin
- */
+function updateInventorySummary(purchasedItems) {
+    const count = (purchasedItems || []).length;
+    const label = document.getElementById('inventoryCount');
+    if (label) {
+        label.textContent = `${count} item`;
+    }
+}
 
 function loadStoreData() {
-    // ★ Gunakan FocusPetSync untuk tampilkan streak & koin (sumber kebenaran)
-    FocusPetSync.refreshUI();
+    const userId = localStorage.getItem('user_id');
+    const localData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+    const coinCount = document.getElementById('coinCount');
+    const streakCount = document.getElementById('streakCount');
 
-    // Tandai item yang sudah dibeli
+    if (coinCount) coinCount.textContent = localData.coins !== undefined ? `${localData.coins}` : '0';
+    if (streakCount) streakCount.textContent = localData.streak !== undefined ? `${localData.streak} Hari` : '0 Hari';
+
+    const renderFromData = (data) => {
+        markPurchasedItems(data.purchasedItems || []);
+        renderInventory(data.purchasedItems || [], data.petAccessory || null, data.petMood || null);
+        updateInventorySummary(data.purchasedItems || []);
+    };
+
+    if (!userId) {
+        renderFromData(localData);
+        return;
+    }
+
+    fetch(`http://localhost/focuspet-api/get_inventory.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === 'success' && result.data) {
+                const inventoryItems = Array.isArray(result.data.items)
+                    ? result.data.items.map(item => item.item_key)
+                    : [];
+
+                const merged = {
+                    ...localData,
+                    purchasedItems: inventoryItems,
+                    petAccessory: result.data.petAccessory || localData.petAccessory || null,
+                    petMood: result.data.petMood || localData.petMood || null
+                };
+
+                localStorage.setItem('focuspet_user_data', JSON.stringify(merged));
+                renderFromData(merged);
+            } else {
+                console.warn('Gagal memuat inventaris dari server:', result.message);
+                renderFromData(localData);
+            }
+        })
+        .catch(error => {
+            console.warn('Server inventaris tidak tersedia:', error);
+            renderFromData(localData);
+        });
+}
+
+function syncStoreDataToLocalStorage(updatedData) {
     const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
-    markPurchasedItems(userData.purchasedItems || []);
+    const merged = { ...userData, ...updatedData };
+    localStorage.setItem('focuspet_user_data', JSON.stringify(merged));
+    return merged;
 }
 
 function markPurchasedItems(purchasedItems) {
@@ -27,20 +77,227 @@ function markPurchasedItems(purchasedItems) {
     });
 }
 
+function getStoreItemLabel(itemKey) {
+    const itemLabels = {
+        topiSulap: 'Topi Sulap',
+        mahkota: 'Mahkota',
+        kacamata: 'Kacamata',
+        bintangEmas1: 'Bintang Emas',
+        bintangEmas2: 'Bintang Emas',
+        bintangEmas3: 'Bintang Emas'
+    };
+    return itemLabels[itemKey] || itemKey;
+}
+
+function renderInventory(purchasedItems, petAccessory, petMood) {
+    const container = document.getElementById('inventoryList');
+    if (!container) return;
+
+    if (!purchasedItems || purchasedItems.length === 0) {
+        container.innerHTML = '<div class="inventory-empty">Belum ada item.</div>';
+        return;
+    }
+
+    const uniqueItems = [...new Set(purchasedItems)];
+    container.innerHTML = uniqueItems.map(itemKey => {
+        const itemLabel = getStoreItemLabel(itemKey);
+        const isEquipped = itemKey.startsWith('bintangEmas')
+            ? petMood === 'Mood Boost'
+            : petAccessory === itemLabel;
+        const badge = isEquipped ? '<span class="inventory-badge">Sedang dipakai</span>' : '';
+
+        return `
+        <div class="inventory-row">
+            <div class="inventory-item">
+                <div class="inventory-name">${itemLabel} ${badge}</div>
+                <div class="inventory-subtitle">${itemKey.startsWith('bintangEmas') ? 'Mood Boost' : 'Aksesori pet'}</div>
+            </div>
+            <div class="inventory-actions">
+                <button class="inventory-release" ${isEquipped ? '' : 'disabled'} onclick="releaseItem('${itemKey}')">Lepas</button>
+                <button class="inventory-release" ${isEquipped ? 'disabled' : ''} onclick="equipItem('${itemKey}')">Pasang</button>
+                <button class="inventory-delete" onclick="deleteItem('${itemKey}')">Hapus</button>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+function deleteItem(itemKey) {
+    const userId = localStorage.getItem('user_id');
+    const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+    const updatedPurchasedItems = (userData.purchasedItems || []).filter(key => key !== itemKey);
+    const isEquipped = userData.petAccessory === getStoreItemLabel(itemKey) || (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas'));
+
+    const updatedData = {
+        purchasedItems: updatedPurchasedItems
+    };
+
+    if (isEquipped) {
+        updatedData.petAccessory = null;
+        updatedData.petMood = 'Bahagia';
+    }
+
+    syncStoreDataToLocalStorage(updatedData);
+    loadStoreData();
+    openInventoryModal();
+
+    if (userId) {
+        fetch('http://localhost/focuspet-api/remove_inventory_item.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, item_key: itemKey })
+        })
+        .then(res => res.json())
+        .then(resp => {
+            if (resp.status !== 'success') {
+                console.warn('Gagal menghapus item di server:', resp.message);
+            }
+        })
+        .catch(err => console.warn('Server hapus item tidak tersedia:', err));
+    }
+
+    alert(`${getStoreItemLabel(itemKey)} telah dihapus dari inventaris.`);
+}
+
+function equipItem(itemKey) {
+    const userId = localStorage.getItem('user_id');
+    const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+    const itemLabel = getStoreItemLabel(itemKey);
+    const updatedData = { petAccessory: null, petMood: 'Bahagia' };
+
+    if (itemKey.startsWith('bintangEmas')) {
+        updatedData.petMood = 'Mood Boost';
+    } else {
+        updatedData.petAccessory = itemLabel;
+        if (itemKey === 'topiSulap') {
+            updatedData.petMood = 'Profesional';
+        } else if (itemKey === 'mahkota') {
+            updatedData.petMood = 'Raja Belajar';
+        } else if (itemKey === 'kacamata') {
+            updatedData.petMood = 'Tampak Pintar';
+        }
+    }
+
+    const merged = syncStoreDataToLocalStorage({ ...userData, ...updatedData });
+    loadStoreData();
+    openInventoryModal();
+
+    if (userId) {
+        fetch('http://localhost/focuspet-api/release_item.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, item_key: itemKey, action: 'equip' })
+        })
+        .then(res => res.json())
+        .then(resp => {
+            if (resp.status !== 'success') {
+                console.warn('Gagal memasang item di server:', resp.message);
+            }
+        })
+        .catch(err => console.warn('Server equip item tidak tersedia:', err));
+    }
+
+    alert(`${itemLabel} berhasil dipasang.`);
+}
+
+function releaseItem(itemKey) {
+    const userId = localStorage.getItem('user_id');
+    const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+    const itemLabel = getStoreItemLabel(itemKey);
+    const isEquipped = userData.petAccessory === itemLabel || (userData.petMood === 'Mood Boost' && itemKey.startsWith('bintangEmas'));
+
+    if (!isEquipped) {
+        alert(`${getStoreItemLabel(itemKey)} tidak sedang dipakai.`);
+        return;
+    }
+
+    const updatedData = {
+        petAccessory: null,
+        petMood: 'Bahagia'
+    };
+
+    syncStoreDataToLocalStorage(updatedData);
+    loadStoreData();
+    openInventoryModal();
+
+    if (userId) {
+        fetch('http://localhost/focuspet-api/release_item.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, item_key: itemKey })
+        })
+        .then(res => res.json())
+        .then(resp => {
+            if (resp.status !== 'success') {
+                console.warn('Gagal melepas item di server:', resp.message);
+            }
+        })
+        .catch(err => console.warn('Server release item tidak tersedia:', err));
+    }
+
+    alert(`${getStoreItemLabel(itemKey)} telah dilepas.`);
+}
+
+function openInventoryModal() {
+    const modal = document.getElementById('inventoryModal');
+    const modalList = document.getElementById('inventoryModalList');
+    const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+    const purchasedItems = userData.purchasedItems || [];
+    const petAccessory = userData.petAccessory || null;
+    const petMood = userData.petMood || null;
+
+    if (purchasedItems.length === 0) {
+        modalList.innerHTML = '<div class="inventory-empty">Belum ada item.</div>';
+    } else {
+        const uniqueItems = [...new Set(purchasedItems)];
+        modalList.innerHTML = uniqueItems.map(itemKey => {
+            const itemLabel = getStoreItemLabel(itemKey);
+            const isEquipped = itemKey.startsWith('bintangEmas')
+                ? petMood === 'Mood Boost'
+                : petAccessory === itemLabel;
+            const badge = isEquipped ? '<span class="inventory-badge">Sedang dipakai</span>' : '';
+
+            return `
+            <div class="inventory-row">
+                <div class="inventory-item">
+                    <div class="inventory-name">${itemLabel} ${badge}</div>
+                    <div class="inventory-subtitle">${itemKey.startsWith('bintangEmas') ? 'Mood Boost' : 'Aksesori pet'}</div>
+                </div>
+                <div class="inventory-actions">
+                    <button class="inventory-release" ${isEquipped ? '' : 'disabled'} onclick="releaseItem('${itemKey}')">Lepas</button>
+                    <button class="inventory-release" ${isEquipped ? 'disabled' : ''} onclick="equipItem('${itemKey}')">Pasang</button>
+                    <button class="inventory-delete" onclick="deleteItem('${itemKey}')">Hapus</button>
+                </div>
+            </div>
+        `;
+        }).join('');
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeInventoryModal() {
+    const modal = document.getElementById('inventoryModal');
+    modal.classList.add('hidden');
+}
+
 function goBack() {
     window.location.href = 'main.html';
 }
 
 function buyItem(itemKey) {
+    const userId = localStorage.getItem('user_id');
     const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
     const card = document.querySelector(`.store-card[data-key="${itemKey}"]`);
-    const cost = parseInt(card.getAttribute('data-cost'), 10);
+    const cost = card ? parseInt(card.getAttribute('data-cost'), 10) : 0;
     userData.purchasedItems = userData.purchasedItems || [];
 
-    // ★ Cek koin dari FocusPetSync (sumber kebenaran)
-    const currentCoins = FocusPetSync.getCoins();
+    if (userData.coins === undefined || userData.coins === null) {
+        alert('Koin tidak tersedia. Silakan kembali ke halaman utama.');
+        return;
+    }
 
-    if (currentCoins < cost) {
+    if (userData.coins < cost) {
         alert('Maaf, koin tidak cukup untuk membeli item ini.');
         return;
     }
@@ -50,49 +307,81 @@ function buyItem(itemKey) {
         return;
     }
 
-    // ★ Kurangi koin lewat FocusPetSync agar konsisten di semua halaman
-    const success = FocusPetSync.spendCoins(cost);
-    if (!success) {
-        alert('Maaf, koin tidak cukup.');
-        return;
+    if (!userId) {
+        alert('Tidak ada user yang terdaftar. Simpan pembelian secara lokal.');
     }
 
-    // Update data pembelian di focuspet_user_data
-    userData.purchasedItems.push(itemKey);
-    userData.coins = FocusPetSync.getCoins(); // sinkronkan
+    const postBuy = userId
+        ? fetch('http://localhost/focuspet-api/buy_item.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ user_id: userId, item_key: itemKey })
+          })
+        : Promise.resolve({ json: () => Promise.resolve({ status: 'success' }) });
 
-    switch (itemKey) {
-        case 'topiSulap':
-            userData.petAccessory = 'Topi Sulap';
-            userData.petMood = 'Profesional';
-            alert('Berhasil membeli Topi Sulap! Petmu sekarang terlihat profesional.');
-            break;
-        case 'mahkota':
-            userData.petAccessory = 'Mahkota';
-            userData.petMood = 'Raja Belajar';
-            alert('Berhasil membeli Mahkota! Petmu sekarang menjadi raja belajar.');
-            break;
-        case 'kacamata':
-            userData.petAccessory = 'Kacamata';
-            userData.petMood = 'Tampak Pintar';
-            alert('Berhasil membeli Kacamata! Petmu sekarang tampak pintar.');
-            break;
-        case 'bintangEmas1':
-        case 'bintangEmas2':
-        case 'bintangEmas3':
-            userData.petMood = 'Mood Boost';
-            alert('Berhasil membeli Bintang Emas! Mood petmu naik.');
-            break;
-        default:
-            alert('Item tidak dikenali.');
-            break;
-    }
+    postBuy
+        .then(response => response.json())
+        .then(result => {
+            if (result.status !== 'success') {
+                alert(result.message || 'Gagal membeli item.');
+                return;
+            }
 
-    localStorage.setItem('focuspet_user_data', JSON.stringify(userData));
+            userData.coins -= cost;
+            userData.purchasedItems.push(itemKey);
 
-    // ★ Refresh UI agar koin di header langsung terupdate
-    FocusPetSync.refreshUI();
-    markPurchasedItems(userData.purchasedItems);
+            // Pasang item ke pet agar tersimpan di server juga
+            // (mirroring perilaku fitur equip di inventory)
+            if (userId) {
+                fetch('http://localhost/focuspet-api/release_item.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId, item_key: itemKey, action: 'equip' })
+                })
+                    .then(res => res.json())
+                    .then(resp => {
+                        if (resp.status !== 'success') {
+                            console.warn('Gagal memasang item di server setelah beli:', resp.message);
+                        }
+                        // tetap lanjut render dari local dulu
+                    })
+                    .catch(err => console.warn('Server equip item tidak tersedia setelah beli:', err));
+            }
+
+            switch (itemKey) {
+                case 'topiSulap':
+                    userData.petAccessory = 'Topi Sulap';
+                    userData.petMood = 'Profesional';
+                    alert('Berhasil membeli Topi Sulap! Petmu sekarang terlihat profesional.');
+                    break;
+                case 'mahkota':
+                    userData.petAccessory = 'Mahkota';
+                    userData.petMood = 'Raja Belajar';
+                    alert('Berhasil membeli Mahkota! Petmu sekarang menjadi raja belajar.');
+                    break;
+                case 'kacamata':
+                    userData.petAccessory = 'Kacamata';
+                    userData.petMood = 'Tampak Pintar';
+                    alert('Berhasil membeli Kacamata! Petmu sekarang tampak pintar.');
+                    break;
+                case 'bintangEmas1':
+                case 'bintangEmas2':
+                case 'bintangEmas3':
+                    userData.petMood = 'Mood Boost';
+                    alert('Berhasil membeli Bintang Emas! Mood petmu naik.');
+                    break;
+                default:
+                    alert('Item tidak dikenali.');
+                    break;
+            }
+
+            syncStoreDataToLocalStorage(userData);
+            loadStoreData();
+        })
+        .catch(error => {
+            console.warn('Gagal menyimpan pembelian ke server:', error);
+            alert('Pembelian tidak dapat disimpan ke server saat ini. Silakan coba lagi nanti.');
+        });
 }
 
 window.addEventListener('load', loadStoreData);

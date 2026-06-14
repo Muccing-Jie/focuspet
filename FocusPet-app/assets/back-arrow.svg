@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Kembali</title>
+  <rect width="512" height="512" rx="38" fill="#ffffff"/>
+  <path d="M31 256 211 94c32-29 83-6 83 38v35h175c24 0 43 19 43 43v92c0 24-19 43-43 43H294v35c0 44-51 67-83 38z" fill="#f7f7f7" stroke="#050505" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M62 256 210 124c12-11 31-2 31 15v66h217c11 0 20 9 20 20v62c0 11-9 20-20 20H241v66c0 17-19 26-31 15z" fill="#ffe27d" stroke="#050505" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M69 256h173" stroke="#050505" stroke-width="15" stroke-linecap="round"/>
+  <path d="M457 225v62" stroke="#ffd66c" stroke-width="18" stroke-linecap="round" opacity=".7"/>
+  <path d="M215 142 77 256l138 114" fill="none" stroke="#fff0ad" stroke-width="16" stroke-linecap="round" opacity=".65"/>
+</svg>

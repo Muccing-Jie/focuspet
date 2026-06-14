@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusPet - Mulai Belajar</title>
+    <title>FocusPet - Mulai Beraktivitas</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -16,7 +16,7 @@
                 <span class="stat-icon">🔥</span>
                 <span class="stat-value" id="streakCount">10 Hari</span>
             </div>
-            <div class="stat-item">
+            <div class="stat-item stat-coin">
                 <span class="stat-icon">💰</span>
                 <span class="stat-value" id="coinCount">200</span>
             </div>
@@ -90,27 +90,28 @@
                 <span class="section-title">Background Musik</span>
             </div>
             <div class="music-grid">
-                <button class="option-btn music-btn selected" data-music="diam">
+                <button class="option-btn music-btn" data-music="diam" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);">
                     <span class="music-emoji">🔇</span>
                     <span>Diam</span>
                 </button>
-                <button class="option-btn music-btn" data-music="musik">
+                <button class="option-btn music-btn" data-music="musik" style="background: linear-gradient(135deg, #ff9166 0%, #ff7a47 100%);">
                     <span class="music-emoji">🎵</span>
                     <span>Musik</span>
                 </button>
-                <button class="option-btn music-btn" data-music="hujan">
+                <button class="option-btn music-btn" data-music="hujan" style="background: linear-gradient(135deg, #4da6ff 0%, #2b8cff 100%);">
                     <span class="music-emoji">🌧️</span>
                     <span>Hujan</span>
                 </button>
-                <button class="option-btn music-btn" data-music="alam">
+                <button class="option-btn music-btn" data-music="alam" style="background: linear-gradient(135deg, #66b366 0%, #4da64d 100%);">
                     <span class="music-emoji">🌳</span>
                     <span>Alam</span>
                 </button>
             </div>
+            <div class="music-status" id="musicStatus">Pilih musik latar terlebih dahulu</div>
         </div>
 
-        <!-- Start Learning Button -->
-        <button class="start-button" onclick="startLearning()">Mulai Belajar</button>
+        <!-- Start Activity Button -->
+        <button class="start-button" onclick="startLearning()">Mulai Beraktivitas</button>
         </div>
 
         <div class="learning-screen hidden" id="learningScreen">
@@ -127,6 +128,7 @@
                     <button class="timer-control-button pause-button" id="pauseButton" onclick="toggleTimer()">Jeda</button>
                     <button class="timer-control-button stop-button" onclick="stopLearning(true)">Berhenti</button>
                 </div>
+                <div class="session-warning" id="sessionWarning"></div>
             </div>
         </div>
 
@@ -142,7 +144,6 @@
         </div>
     </div>
 
-    <script src="../js/focuspet-sync.js"></script>
     <script src="../js/belajar.js"></script>
 </body>
 </html>

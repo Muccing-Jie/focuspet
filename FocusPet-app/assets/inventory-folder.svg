@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Inventaris</title>
+  <rect width="512" height="512" rx="38" fill="#ffffff"/>
+  <path d="M23 218v-68c0-24 20-44 44-44h35c20 0 37-14 41-34l5-25c4-22 23-38 46-38h105c23 0 42 16 46 39l4 22c4 21 22 36 43 36h71c24 0 44 20 44 44v68z" fill="#ffad62" stroke="#050505" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M79 219v-36c0-22 18-40 40-40h288c22 0 40 18 40 40v36z" fill="#f7f7f7" stroke="#050505" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M16 226c-8 0-14 7-13 15l22 184c4 34 21 56 55 56h352c34 0 51-22 55-56l22-184c1-8-5-15-13-15z" fill="#ffe69a" stroke="#050505" stroke-width="24" stroke-linejoin="round"/>
+  <path d="M23 402h466l-3 25c-4 33-20 54-54 54H80c-34 0-50-21-54-54z" fill="#e6d183"/>
+  <path d="M185 287v13" stroke="#050505" stroke-width="16" stroke-linecap="round"/>
+  <path d="M327 287v13" stroke="#050505" stroke-width="16" stroke-linecap="round"/>
+  <path d="M236 298c13 15 27 22 42 22s29-7 42-22" fill="none" stroke="#050505" stroke-width="14" stroke-linecap="round"/>
+  <path d="M4 403h80" stroke="#050505" stroke-width="15" stroke-linecap="round"/>
+  <path d="M508 275l-7 44" stroke="#050505" stroke-width="15" stroke-linecap="round"/>
+  <path d="M506 114h-80" stroke="#050505" stroke-width="15" stroke-linecap="round"/>
+</svg>

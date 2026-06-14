@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusPet - Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-leaderboard">
+    <div class="screen">
+        <button class="back-button" type="button" onclick="location.href='main.html'">← Kembali</button>
+        <div class="leaderboard-header">
+            <div>
+                <div class="leaderboard-title">Leaderboard</div>
+                <div class="leaderboard-subtitle">Lihat peringkat teman dan kemampuan pet</div>
+            </div>
+            <div class="leaderboard-summary">
+                <div class="summary-box">
+                    <div class="summary-label">Rank Anda</div>
+                    <div class="summary-value" id="userRank">#--</div>
+                </div>
+                <div class="summary-box summary-box--accent">
+                    <div class="summary-label">Skor Anda</div>
+                    <div class="summary-value" id="userScore">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="leaderboard-list" id="leaderboardList"></div>
+    </div>
+    <script>
+        // Ambil leaderboard dari backend lokal (PHP)
+        function calculateScore(item) {
+            return (item.coins || 0) + Math.round((item.xp || 0) * 0.5) + ((item.streak || 0) * 3);
+        }
+
+        function renderLeaderboardFromItems(items) {
+            const container = document.getElementById('leaderboardList');
+            if (!container) return;
+            const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+
+            items.sort(function(a, b) {
+                return calculateScore(b) - calculateScore(a);
+            });
+
+            container.innerHTML = items.map(function(item, index) {
+                const rank = index + 1;
+                const isCurrent = userData.name && item.name === userData.name;
+                return `
+                    <div class="leaderboard-row ${isCurrent ? 'leaderboard-row--current' : ''}">
+                        <div class="leaderboard-rank">#${rank}</div>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${item.name}</div>
+                            <div class="leaderboard-meta">Level ${item.level} • ${item.xp} XP</div>
+                        </div>
+                        <div class="leaderboard-score">${calculateScore(item)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function fetchLeaderboard() {
+            fetch('http://localhost/focuspet-api/get_leaderboard.php')
+                .then(res => res.json())
+                .then(resp => {
+                    if (resp && resp.status === 'success' && Array.isArray(resp.data)) {
+                        const items = resp.data.slice();
+                        // Jika user lokal ada, pastikan dimasukkan/diupdate
+                        const userData = JSON.parse(localStorage.getItem('focuspet_user_data') || '{}');
+                        if (userData && userData.name) {
+                            const existing = items.find(i => i.name === userData.name);
+                            const userObj = { name: userData.name, level: userData.level || 1, xp: userData.xp || 0, coins: userData.coins || 0, streak: userData.streak || 0 };
+                            if (existing) {
+                                existing.level = userObj.level; existing.xp = userObj.xp; existing.coins = userObj.coins; existing.streak = userObj.streak;
+                            } else {
+                                items.push(userObj);
+                            }
+                        }
+                        renderLeaderboardFromItems(items);
+                    } else {
+                        console.warn('Leaderboard backend returned error, falling back to static sample.');
+                        renderLeaderboardFromItems([]);
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to fetch leaderboard:', err);
+                    renderLeaderboardFromItems([]);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLeaderboard);
+    </script>
+</body>
+</html>

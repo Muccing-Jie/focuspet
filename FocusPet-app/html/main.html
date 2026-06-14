@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,28 +8,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body class="page-main">
     <div class="screen">
         <!-- Header Stats -->
-        <div class="header-stats">
-            <div class="stat-item">
-                <span class="stat-icon">🔥</span>
-                <span class="stat-value" id="streakCount">10 Hari</span>
+        <div class="header-top">
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">🔥</span>
+                    <span class="stat-value" id="streakCount">10 Hari</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">💰</span>
+                    <span class="stat-value" id="coinCount">200</span>
+                </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-icon">💰</span>
-                <span class="stat-value" id="coinCount">200</span>
-            </div>
+            <button class="main-inventory-button" type="button" onclick="openInventoryModal()"
+                aria-label="Buka inventaris">
+                <img class="main-inventory-icon" src="../assets/inventory-folder.svg" alt="" aria-hidden="true">
+            </button>
+            <button class="logout-button" type="button" onclick="logout()" aria-label="Keluar">
+                Logout
+            </button>
         </div>
 
         <!-- Pet Card -->
         <div class="pet-card">
             <div class="pet-section">
                 <div class="pet-header">
-                    <div class="pet-name">Puppy</div>
+                    <div class="pet-name-row">
+                        <div>
+                            <div class="pet-name" id="petName">Puppy</div>
+                            <div class="pet-mood" id="petMood">Mood: Bahagia</div>
+                        </div>
+                        <button class="pet-edit-button" id="editPetNameButton" type="button"
+                            aria-label="Ubah nama pet">✎</button>
+                    </div>
                     <div class="pet-level" id="petLevel">Level 1</div>
                 </div>
-                <img src="../assets/petsehat.jpeg" alt="Pet Sehat" class="pet-placeholder">
+                <div class="pet-image-container">
+                    <img src="../assets/petsehat.jpeg" alt="Pet Sehat" class="pet-placeholder">
+                    <span class="pet-accessory-overlay" id="petAccessoryOverlay"></span>
+                </div>
             </div>
             <div class="level-section">
                 <div class="level-bar">
@@ -44,25 +65,102 @@
         <div class="menu-section">
             <a href="belajar.html" class="menu-item" data-page="belajar">
                 <span class="menu-icon">📚</span>
-                <span class="menu-text">Mulai Belajar</span>
+                <span class="menu-text">Mulai Beraktivitas</span>
             </a>
             <a href="toko.html" class="menu-item" data-page="toko">
                 <span class="menu-icon">🏪</span>
                 <span class="menu-text">Toko Virtual</span>
             </a>
-            <a href="skor.html" class="menu-item" data-page="skor">
+            <a href="leaderboard.html" class="menu-item" data-page="leaderboard">
                 <span class="menu-icon">🏆</span>
-                <span class="menu-text">Skor Terbaik</span>
+                <span class="menu-text">Leaderboard</span>
             </a>
             <a href="statistik.html" class="menu-item" data-page="statistik">
                 <span class="menu-icon">📊</span>
                 <span class="menu-text">Statistik</span>
             </a>
+            <button class="menu-item" type="button" data-page="skor" onclick="openScoreModal()">
+                <span class="menu-icon">🥇</span>
+                <span class="menu-text">Skor Terbaik</span>
+            </button>
         </div>
     </div>
 
 
-    <script src="../js/focuspet-sync.js"></script>
+    <div id="inventoryModal" class="inventory-modal hidden">
+        <div class="modal-overlay" onclick="closeInventoryModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" type="button" onclick="closeInventoryModal()" aria-label="Kembali">
+                    <img class="modal-close-icon" src="../assets/back-arrow.svg" alt="" aria-hidden="true">
+                </button>
+                <h2>Inventaris Saya</h2>
+            </div>
+            <div id="inventoryModalList" class="inventory-list"></div>
+        </div>
+    </div>
+
+    <div class="score-modal-overlay" id="scoreModalOverlay">
+        <div class="score-modal">
+            <button class="score-modal-close" type="button" onclick="closeScoreModal()">× Kembali</button>
+            <div class="score-modal-topline">
+                <div class="score-pill">
+                    <span>Streak</span>
+                    <strong id="modalStreakCount">0 Hari</strong>
+                </div>
+                <div class="score-pill score-pill-coin">
+                    <span>Koin</span>
+                    <strong id="modalCoinCount">0</strong>
+                </div>
+            </div>
+            <div class="score-modal-card">
+                <div class="score-pet-badge">
+                    <span>Pet Power</span>
+                    <span>Semangat</span>
+                </div>
+                <img src="../assets/petsehat.jpeg" alt="Pet Sehat" class="score-pet-image">
+                <div class="score-modal-progress">
+                    <div class="score-modal-heading">Progress XP</div>
+                    <div class="score-progress-bar">
+                        <div class="score-progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="score-stat-grid">
+                <div class="score-stat-card score-stat-card--green">
+                    <span class="stat-value" id="bestStreakValue">0</span>
+                    <span class="stat-label">Streak Terbaik</span>
+                </div>
+                <div class="score-stat-card score-stat-card--purple">
+                    <span class="stat-value" id="longestSessionValue">0 jam</span>
+                    <span class="stat-label">Sesi Terlama</span>
+                </div>
+                <div class="score-stat-card score-stat-card--yellow">
+                    <span class="stat-value" id="mostSessionsValue">0</span>
+                    <span class="stat-label">Sesi Paling Banyak</span>
+                </div>
+                <div class="score-stat-card score-stat-card--red">
+                    <span class="stat-value" id="totalSessionsValue">0</span>
+                    <span class="stat-label">Total Sesi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pet-name-modal-overlay" id="petNameModalOverlay">
+        <div class="pet-name-modal">
+            <button class="pet-name-modal-close" id="petNameModalClose" type="button">×</button>
+            <h3>Ubah Nama Pet</h3>
+            <p>Masukkan nama baru untuk Dogy (maksimal 20 karakter).</p>
+            <input id="petNameInput" type="text" maxlength="20" placeholder="Nama pet baru" />
+            <div class="pet-name-modal-actions">
+                <button class="pet-name-cancel" id="petNameCancelButton" type="button">Batal</button>
+                <button class="pet-name-save" id="petNameSaveButton" type="button">Simpan</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/main.js"></script>
 </body>
+
 </html>

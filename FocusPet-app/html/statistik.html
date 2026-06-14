@@ -9,18 +9,6 @@
 </head>
 <body class="page-statistik">
     <div class="screen">
-        <!-- Header Stats -->
-        <div class="header-stats">
-            <div class="stat-item">
-                <span class="stat-icon">🔥</span>
-                <span class="stat-value" id="streakCount">0 Hari</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-icon">💰</span>
-                <span class="stat-value" id="coinCount">0</span>
-            </div>
-        </div>
-
         <button class="back-button" type="button" onclick="location.href='main.html'">← Kembali</button>
         <!-- top summary removed -->
 
@@ -30,20 +18,22 @@
                     <div style="display:flex;align-items:center;gap:10px"><span class="section-icon">📊</span><span>AKTIVITAS MINGGU INI</span></div>
                     <span class="section-expand">›</span>
                 </div>
+               
             </a>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div style="display:flex;align-items:center;gap:10px"><span class="section-icon">🎯</span><span>TARGET HARI INI</span></div>
+                    <span class="section-expand">›</span>
+                </div>
+            </div>
 
             <a href="statistik-rapor.html" class="section-card section-link">
                 <div class="section-header">
                     <div style="display:flex;align-items:center;gap:10px"><span class="section-icon">📒</span><span>RAPOR HEWAN PELIHARAAN</span></div>
                     <span class="section-expand">›</span>
                 </div>
-            </a>
-
-            <a href="riwayat.html" class="section-card section-link" id="historySectionCard">
-                <div class="section-header">
-                    <div style="display:flex;align-items:center;gap:10px"><span class="section-icon">📜</span><span>RIWAYAT SESI</span></div>
-                    <span class="section-expand">›</span>
-                </div>
+               
             </a>
         </section>
 
@@ -54,7 +44,16 @@
             </div>
         </section>
 
-        <script src="../js/focuspet-sync.js"></script>
+        <section class="history-card">
+            <div class="history-header-group">
+                <div class="history-header">RIWAYAT SESI</div>
+                <button type="button" id="clearSessionsBtn" class="history-clear-button">Hapus Semua</button>
+            </div>
+
+            <div id="sessionList" class="session-list">
+                <!-- sessions will be rendered here by js/statistik.js -->
+            </div>
+        </section>
         <script src="../js/statistik.js"></script>
     </div>
 </body>

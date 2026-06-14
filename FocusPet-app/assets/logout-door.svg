@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Keluar</title>
+  <rect width="512" height="512" rx="38" fill="#ffffff"/>
+  <path d="M48 43 202 6v500L48 469z" fill="#fff06a" stroke="#050505" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M72 72 109 63v382l-37-9z" fill="#f5b43a" opacity=".9"/>
+  <path d="M202 72h99v66" fill="none" stroke="#050505" stroke-width="18" stroke-linecap="square"/>
+  <path d="M202 439h99v-64" fill="none" stroke="#050505" stroke-width="18" stroke-linecap="square"/>
+  <path d="M277 106h68v131" fill="none" stroke="#050505" stroke-width="18" stroke-linecap="square"/>
+  <path d="M277 407h68V277" fill="none" stroke="#050505" stroke-width="18" stroke-linecap="square"/>
+  <path d="M202 205h154v-58l125 109-125 109v-59H202z" fill="#d45375" stroke="#050505" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M245 62h56v76h-56z" fill="#8796a7" opacity=".45"/>
+  <path d="M245 374h56v73h-56z" fill="#8796a7" opacity=".65"/>
+  <path d="M202 138h75v67h-75z" fill="#748594" opacity=".78"/>
+  <path d="M202 306h75v68h-75z" fill="#748594" opacity=".78"/>
+  <circle cx="152" cy="256" r="28" fill="#ffffff" stroke="#050505" stroke-width="18"/>
+  <path d="M270 266h13" stroke="#ffffff" stroke-width="15"/>
+  <path d="M303 266h13" stroke="#ffffff" stroke-width="15"/>
+</svg>

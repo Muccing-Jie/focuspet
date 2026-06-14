@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,22 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body class="page-toko">
     <div class="screen">
-        <!-- Header Stats -->
-        <div class="header-stats">
-            <div class="stat-item">
-                <span class="stat-icon">🔥</span>
-                <span class="stat-value" id="streakCount">0 Hari</span>
+        <div class="topbar">
+            <div class="top-pill">
+                <span class="pill-icon">🔥</span>
+                <span class="pill-text" id="streakCount">0 Hari</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-icon">💰</span>
-                <span class="stat-value" id="coinCount">0</span>
+            <div class="top-pill">
+                <span class="pill-icon">💰</span>
+                <span class="pill-text" id="coinCount">0</span>
             </div>
         </div>
 
-        <button class="back-button" onclick="goBack()">← Kembali</button>
+        <div class="page-header">
+            <button class="back-button" onclick="goBack()">← Kembali</button>
+            <h2 class="page-title">Toko Virtual</h2>
+        </div>
 
         <div class="store-grid">
             <div class="store-card" data-key="topiSulap" data-cost="50">
@@ -69,10 +69,10 @@
                 <button class="store-buy" onclick="buyItem('bintangEmas3')">Beli</button>
             </div>
         </div>
+
     </div>
 
-    <script src="../js/focuspet-sync.js"></script>
     <script src="../js/toko.js"></script>
 </body>
-
 </html>
+
